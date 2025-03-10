@@ -1,5 +1,5 @@
-import { db } from "@/lib/db";
 import { servers } from "@/drizzle/schema";
+import { db } from "@/lib/db";
 import ServerCard from "../ui/serverCard";
 import SearchBar from "../ui/searchBar";
 import { ilike } from "drizzle-orm/expressions";
