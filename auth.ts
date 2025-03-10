@@ -1,6 +1,7 @@
 // auth.ts
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { authConfig } from "./auth.config";
 import { z } from "zod";
 import bcrypt from "bcrypt";
@@ -17,6 +18,7 @@ async function getUser(email: string) {
 
 export const { auth, signIn, signOut } = NextAuth({
   ...authConfig,
+  adapter: DrizzleAdapter(db),
   providers: [
     Credentials({
       async authorize(credentials) {
