@@ -4,14 +4,17 @@ import ServerCard from "../ui/serverCard";
 import SearchBar from "../ui/searchBar";
 import { ilike } from "drizzle-orm/expressions";
 
+// Allow searchParams to be an object or a Promise of an object.
+type SearchParamsType = Promise<{ q?: string }>;
+
 interface ServersPageProps {
-  searchParams: {
-    q?: string;
-  };
+  searchParams: SearchParamsType;
 }
 
 export default async function ServersPage({ searchParams }: ServersPageProps) {
-  const query = searchParams.q || "";
+  // resolve searchParams if it's a promise.
+  const resolvedSearchParams = await searchParams;
+  const query = resolvedSearchParams.q || "";
 
   const serverList = query
     ? await db
@@ -21,7 +24,7 @@ export default async function ServersPage({ searchParams }: ServersPageProps) {
     : await db.select().from(servers);
 
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100">
+    <div className="min-h-screen bg-gray-900 text-gray-100 py-8">
       <h1 className="text-3xl font-bold p-4 mb-4">MCP Servers</h1>
       <div className="px-4">
         <SearchBar initialQuery={query} />

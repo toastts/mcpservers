@@ -16,7 +16,12 @@ async function getUser(email: string) {
   return user || null;
 }
 
-export const { auth, signIn, signOut } = NextAuth({
+export const {
+  handlers: { GET, POST },
+  auth,
+  signIn,
+  signOut,
+} = NextAuth({
   ...authConfig,
   adapter: DrizzleAdapter(db),
   providers: [
